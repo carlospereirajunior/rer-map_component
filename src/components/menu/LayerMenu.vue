@@ -368,6 +368,21 @@
       wmsOptions.bounds = L.latLngBounds(layer.bounds)
     }
 
+    if (typeof layer.maxNativeZoom === 'number') {
+      wmsOptions.maxNativeZoom = layer.maxNativeZoom
+    }
+    if (typeof layer.minNativeZoom === 'number') {
+      wmsOptions.minNativeZoom = layer.minNativeZoom
+    }
+
+    if (typeof layer.hideBelowZoom === 'number') {
+      wmsOptions.minZoom = layer.hideBelowZoom
+    }
+
+    if (typeof layer.tileSize === 'number') {
+      wmsOptions.tileSize = layer.tileSize
+    }
+
     const wmsLayer = L.tileLayer.wms(layer.baseUrl ?? '', wmsOptions)
 
     if (layer?.cqlFilter && layer.cqlFilter.length > 0) {
@@ -427,10 +442,16 @@
   }
 
   const convertToGeojsonLayer = (layer: LayerData): L.GeoJSON => {
-    const geojsonLayer = L.geoJSON(layer.geojson, {
+    const geoJsonOptions: L.GeoJSONOptions = {
       ...layer,
       style: layer.style
-    })
+    }
+
+    if (layer.preferCanvas) {
+      geoJsonOptions.renderer = L.canvas()
+    }
+
+    const geojsonLayer = L.geoJSON(layer.geojson, geoJsonOptions)
 
     watchGeoJsonLayerStatus(geojsonLayer)
 

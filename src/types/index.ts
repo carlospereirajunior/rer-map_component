@@ -149,6 +149,16 @@ export type LayerData = {
   bounds?: LatLngBoundsExpression
   options?: Record<string, unknown>
 
+  maxNativeZoom?: number
+
+  minNativeZoom?: number
+
+  hideBelowZoom?: number
+
+  tileSize?: number
+
+  preferCanvas?: boolean
+
   mapSource?: 'wms' | 'geojson' | 'none' | 'consumer'
   actions?: LayerActionConfig[]
   metrics?: LayerMetricsConfig[]
